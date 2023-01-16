@@ -9,7 +9,14 @@ import {
     FormControl,
     MenuItem,
     Select,
-    InputLabel
+    InputLabel,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper
 } from '@mui/material';
 
 export function Home () {
@@ -21,7 +28,7 @@ export function Home () {
     const [sessao, setSessao] = useState({});
     const [listaSessoes, setListaSessoes] = useState([]);
 
-    const horariosConversao =
+    const relacaoHorarios =
     [
         {valor:1, hora:'10:00'},
         {valor:2, hora:'10:30'},
@@ -42,14 +49,26 @@ export function Home () {
         {valor:17, hora:'18:00'},
         {valor:18, hora:'18:30'},
         {valor:19, hora:'19:00'},
-        {valor:20, hora:'19:30'}
+        {valor:20, hora:'19:30'},
+        {valor:21, hora:'20:00'},
+        {valor:22, hora:'20:30'},
+        {valor:23, hora:'21:00'}
     ]
 
-    const conversor = (valor) => {
+    const conversorHorario = (valor) => {
         let index;
-        index = horariosConversao.findIndex(x => x.valor = valor)
+        index = relacaoHorarios.findIndex(x => x.valor == valor)
 
-        return horariosConversao[index].hora;
+        return relacaoHorarios[index].hora;
+    }
+
+    const conversorOpcao = (opcao) => {
+        if (opcao == 1)
+            return 'Unha';
+        else if (opcao == 2)
+            return 'Cabelo';
+        else if (opcao == 3 )
+            return 'Cabelo e Unha';
     }
 
 
@@ -72,7 +91,8 @@ export function Home () {
                 {
                     clienteSessao: cliente,
                     horarioInicial: horario,
-                    horariofinal: (horario+opcao),
+                    horarioFinal: (horario+opcao),
+                    opcaoSessao: opcao
                 }
             )
             setToggle(true);
@@ -167,22 +187,39 @@ export function Home () {
             </Grid>
 
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                <Grid item xs={3} />
+                <Grid item xs={2} />
 
-                <Grid item xs={4} sx={{
-                    my: 2,
+                <Grid item xs={8} sx={{
+                    mt: 8,
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
-                    {listaSessoes.map((item, index) => {
-                        // return (
-                        //     <Typography sx={{ textAlign: 'center' }} mt={1.5} key={index}>{item.}</Typography>
-                        //     )
-                        console.log(item);
-                    })}
+
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="table clientes">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="left"><b>Cliente</b></TableCell>
+                                    <TableCell align="center"><b>Opção</b></TableCell>
+                                    <TableCell align="center"><b>Horario Inicial</b></TableCell>
+                                    <TableCell align="center"><b>Horario Final</b></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {listaSessoes.map((item, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell align="left">{item.clienteSessao}</TableCell>
+                                        <TableCell align="center">{conversorOpcao(item.opcaoSessao)}</TableCell>
+                                        <TableCell align="center">{conversorHorario(item.horarioInicial)}</TableCell>
+                                        <TableCell align="center">{conversorHorario(item.horarioFinal)}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
                 </Grid>
 
-                <Grid item xs={5} />
+                <Grid item xs={2} />
             </Grid>
         </Box>
     )
