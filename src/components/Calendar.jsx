@@ -7,7 +7,7 @@ const WeekNames = () => {
         {
             ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'].map(
                 (dayName) => (
-                    <td className='text-cyan-500 font-medium'>
+                    <td className='text-pink-600 font-medium'>
                         {dayName}
                     </td>
                 ),
@@ -37,8 +37,8 @@ export const Calendar = ({ selectedDate, setSelectedDate }) => {
         const data = takeMonth(selectedDate)();
 
         return (
-            <div className='flex flex-col items-center justify-between p-4 border-2 border-cyan-900 rounded-lg'>
-                <h1 className='text-cyan-700 text-xs font-semibold'>{format(selectedDate, 'yyyy')}</h1>
+            <div className='bg-white flex flex-col items-center justify-between p-4 border-2 border-violet-900 rounded-lg'>
+                <h1 className='text-violet-900 text-xs font-semibold'>{format(selectedDate, 'yyyy')}</h1>
 
                 <div className='flex w-full items-center justify-between'>
                     <button
@@ -72,7 +72,7 @@ export const Calendar = ({ selectedDate, setSelectedDate }) => {
                                         (day) => {
                                             return (
                                                 <td
-                                                    className={`w-9 h-9 items-center justify-center cursor-pointer ${isSameDay(day, selectedDate) ? 'bg-slate-600 text-white' : ''}`}
+                                                    className={`w-9 h-9 items-center justify-center cursor-pointer ${isSameDay(day, selectedDate) ? 'bg-pink-600 text-white' : ''}`}
                                                     onClick={() => {
                                                         setSelectedDate(day)
                                                         console.log(formatISO(day).slice(0, 10))
