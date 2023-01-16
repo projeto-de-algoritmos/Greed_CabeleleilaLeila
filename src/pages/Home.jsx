@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import IntervalScheduling from '../utils/IntervalScheduling';
 import {
     Box,
     TextField,
@@ -20,13 +21,17 @@ import {
 } from '@mui/material';
 
 export function Home () {
+    const intervalScheduling = new IntervalScheduling();
 
     const [opcao, setOpcao] = useState('');
     const [horario, setHorario] = useState('');
     const [cliente, setCliente] = useState('');
     const [toggle, setToggle] = useState(false);
+    const [toggleMostrarAgenda, setToggleMostrarAgenda] = useState(false);
     const [sessao, setSessao] = useState({});
     const [listaSessoes, setListaSessoes] = useState([]);
+    const [listaScheduling, setListaScheduling] = useState([]);
+    const [listaFinal, setListaFinal] = useState([]);
 
     const relacaoHorarios =
     [
@@ -81,8 +86,18 @@ export function Home () {
     };
 
     const handleClick = () => {
-
         setListaSessoes([...listaSessoes, sessao]);
+    }
+
+
+    const handleAgenda = () => {
+        let resultado; 
+
+        intervalScheduling.ordenarDescendente(listaScheduling);
+        resultado = intervalScheduling.calculaScheduling(listaScheduling);
+        setListaFinal(resultado);
+
+        setToggleMostrarAgenda(true);
     }
 
     useEffect(() => {
@@ -100,6 +115,11 @@ export function Home () {
         else
             setToggle(false);
     }, [opcao,horario,cliente]);
+
+    useEffect(() => {
+        setListaScheduling(listaSessoes);
+    }, [listaSessoes]);
+
 
     return (
         <Box sx={{ width: '100%', mt: 10 }}>
@@ -129,9 +149,9 @@ export function Home () {
                             label="Opção"
                             onChange={handleChange}
                         >
-                            <MenuItem value={1}>Unha</MenuItem>
-                            <MenuItem value={2}>Cabelo</MenuItem>
-                            <MenuItem value={3}>Cabelo e Unha</MenuItem>
+                            <MenuItem value={1}>Unha - 00:30</MenuItem>
+                            <MenuItem value={2}>Cabelo - 01:00</MenuItem>
+                            <MenuItem value={3}>Cabelo e Unha - 01:30</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
@@ -186,41 +206,88 @@ export function Home () {
                 <Grid item xs={2} />
             </Grid>
 
+
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                 <Grid item xs={2} />
 
                 <Grid item xs={8} sx={{
-                    mt: 8,
+                    mt: 3,
                     justifyContent: 'center',
                     alignItems: 'center'
                 }}>
+                    <Button
+                        variant="contained"
+                        onClick={handleAgenda}
+                        sx={{ height: '3.5rem', width: '100%' }}
+                        disabled={!toggle}
+                    >
+                        Gerar agenda 
+                    </Button>
 
-                    <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="table clientes">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align="left"><b>Cliente</b></TableCell>
-                                    <TableCell align="center"><b>Opção</b></TableCell>
-                                    <TableCell align="center"><b>Horario Inicial</b></TableCell>
-                                    <TableCell align="center"><b>Horario Final</b></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {listaSessoes.map((item, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell align="left">{item.clienteSessao}</TableCell>
-                                        <TableCell align="center">{conversorOpcao(item.opcaoSessao)}</TableCell>
-                                        <TableCell align="center">{conversorHorario(item.horarioInicial)}</TableCell>
-                                        <TableCell align="center">{conversorHorario(item.horarioFinal)}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
                 </Grid>
 
                 <Grid item xs={2} />
             </Grid>
+
+
+            
+            {toggleMostrarAgenda==false ?
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                    <Grid item xs={2} />
+
+                    <Grid item xs={8} sx={{
+                        mt: 8,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+
+                        <TableContainer component={Paper}>
+                            <Table sx={{ minWidth: 650 }} aria-label="table clientes">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="left"><b>Cliente</b></TableCell>
+                                        <TableCell align="center"><b>Opção</b></TableCell>
+                                        <TableCell align="center"><b>Horario Inicial</b></TableCell>
+                                        <TableCell align="center"><b>Horario Final</b></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {listaSessoes.map((item, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="left">{item.clienteSessao}</TableCell>
+                                            <TableCell align="center">{conversorOpcao(item.opcaoSessao)}</TableCell>
+                                            <TableCell align="center">{conversorHorario(item.horarioInicial)}</TableCell>
+                                            <TableCell align="center">{conversorHorario(item.horarioFinal)}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>
+
+                    <Grid item xs={2} /> 
+                </Grid>
+                        : 
+                        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+                        <Grid item xs={2} />
+    
+                        <Grid item xs={8} sx={{
+                            mt: 8,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+          
+                        }}>
+                            <Typography variant="h5" sx={{mb: 3}} align="center">Clientes que devem ser atendidos:</Typography>
+                            {listaFinal.map((item, index) => (
+                                <Typography sx={{my: 1}} align="center" key={index}>{item.clienteSessao} às {conversorHorario(item.horarioInicial)} - {conversorHorario(item.horarioFinal)} ({conversorOpcao(item.opcaoSessao)})</Typography>
+                            ))}
+
+                        </Grid>
+    
+                        <Grid item xs={2} /> 
+                    </Grid>
+                }
+
         </Box>
     )
 }
