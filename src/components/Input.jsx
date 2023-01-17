@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 export const Input = ({
     label,
     placeholder,
-    updateValue,
+    value,
+    setValue,
     mask = (value) => value
 }) => {
-    const [value, setValue] = useState('');
-
-    useEffect(() => {
-        updateValue(value);
-    }, [value])
 
     return (
         <div className="w-full flex flex-col items-start justify-center gap-2">
