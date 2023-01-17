@@ -37,7 +37,7 @@ export const Calendar = ({ selectedDate, setSelectedDate }) => {
         const data = takeMonth(selectedDate)();
 
         return (
-            <div className='bg-white flex flex-col items-center justify-between p-4 border-2 border-violet-900 rounded-lg'>
+            <div className='bg-white w-80 flex flex-col items-center justify-between p-4 border-2 border-violet-900 rounded-lg'>
                 <h1 className='text-violet-900 text-xs font-semibold'>{format(selectedDate, 'yyyy')}</h1>
 
                 <div className='flex w-full items-center justify-between'>
