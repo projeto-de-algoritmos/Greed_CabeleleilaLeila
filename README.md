@@ -24,7 +24,7 @@ alunos a organizarem suas agendas. O projeto apresenta um algoritmo inspirado no
 ### Instalação
 Para instalar o projeto, bastar seguir os seguintes comandos:
 ```
-$ git clone https://github.com/projeto-de-algoritmos/Greed_.git
+$ git clone https://github.com/projeto-de-algoritmos/Greed_CabeleleilaLeila_LazyStudent
 ```
 Em seguida é preciso mudar para a branch farfetcher utilizando o seguinte comando:
 ```
