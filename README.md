@@ -1,4 +1,4 @@
-# Cabeleleila Leila & Lazy Studente
+# Cabeleleila Leila & Lazy Student
 
 **Número da Lista**: 18<br>
 **Conteúdo da Disciplina**: Greed<br>
@@ -39,7 +39,7 @@ alunos a organizarem suas agendas. O projeto apresenta um algoritmo inspirado no
 ### Instalação
 Para instalar o projeto, bastar seguir os seguintes comandos:
 ```
-$ git clone https://github.com/projeto-de-algoritmos/Greed_.git
+$ git clone https://github.com/projeto-de-algoritmos/Greed_CabeleleilaLeila_LazyStudent
 ```
 Em seguida é preciso mudar para a branch main (Projeto CabeleleilaLeila) ou lazy-student(LazyStudent) utilizando o seguinte comando:
 ```
